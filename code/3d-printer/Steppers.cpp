@@ -4,14 +4,17 @@
 class Steppers {
   private:
     Stepper** steppers;
+    int count;
     
   public:
-    Steppers(Stepper* steppers[]) {
+    Steppers(Stepper* steppers[], int count) {
       this->steppers = steppers;
+      this->count = count;
+      Serial.print(count);
     };
 
     void setSpeeds(int speed) {
-      for(int i = 0; i < sizeof(this->steppers); i++) {
+      for(int i = 0; i < this->count; i++) {
         this->steppers[i]->setSpeed(speed);
       }
     };
@@ -25,11 +28,15 @@ class Steppers {
       int steps_left = abs(steps);
       
       while(steps_left > 0) { 
-        for(int i = 0; i < sizeof(this->steppers); i++) {
+        for(int i = 0; i < this->count; i++) {
           this->steppers[i]->step(dir);
         }
         steps_left--;
       }
+    };
+
+    int size(){
+      return count;
     };
 
     void step(int steps, int index) {
